@@ -11,6 +11,8 @@ class Torneo extends Model
 {
     use HasUuids;
 
+    public static $IMAGE_DEFAULT= 'https://www.sport1.me/wp-content/uploads/2021/05/Wimbledon-2021-Dates.jpg';
+
     protected $fillable = [
         'id',
         'idSecundario',
@@ -29,12 +31,9 @@ class Torneo extends Model
 
     ];
 
-    public function tenista()
-    {
-        return $this->hasMany(Tenista::class);
-    }
 
-    public function participante()
+
+    public function participantes   ()
     {
         return $this->hasMany(Participante::class);
     }

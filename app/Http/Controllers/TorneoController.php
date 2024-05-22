@@ -9,8 +9,8 @@ class TorneoController extends Controller
 {
     public function index()
     {
-        $torneos=Torneo::with('participante')->get();
-        return response($torneos);
+        $torneos=Torneo::with('participantes.tenista')->get();
+        return view('torneos.index')->with('torneos',$torneos);
 
     }
 }

@@ -17,6 +17,10 @@ class Participante extends Model
 
     protected $hidden =[
         'torneo_id',
+        'id',
+        'tenista_id',
+        'tenista_nombre',
+        'tenista_ranking',
         'created_at',
         'updated_at',
         ];

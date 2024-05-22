@@ -26,7 +26,7 @@ class TorneoTableSeeder extends Seeder
                 'puntos' => 2000,
                 'fechaInicio' => '2024-06-24',
                 'fechaFinalizacion' => '2024-07-07',
-                'imagen' => 'wimbledon.jpg',
+                'imagen' => 'https://www.sport1.me/wp-content/uploads/2021/05/Wimbledon-2021-Dates.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

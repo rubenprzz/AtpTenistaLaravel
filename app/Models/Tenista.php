@@ -36,6 +36,10 @@ class Tenista extends Model
         return $this->belongsTo(Torneo::class);
 
     }
+    public function participantes()
+    {
+        return $this->hasMany(Participante::class);
+    }
     protected $hidden = [
         'isDeleted',
         'created_at',

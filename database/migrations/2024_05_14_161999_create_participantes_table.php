@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('tenista_id');
             $table->foreignUuid('torneo_id');
             $table->string('tenista_nombre');
+            $table->bigInteger('tenista_ranking');
             $table->timestamps();
         });
     }
