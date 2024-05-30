@@ -9,8 +9,8 @@ class TenistaController extends Controller
 {
     public function index()
     {
-        $tenistas= Tenista::with('torneo')->get();
-        return response($tenistas);
+        $tenistas= Tenista::with('torneo')->paginate(3);
+        return view('tenistas.index')->with('tenistas',$tenistas);
 
     }
 }

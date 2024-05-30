@@ -16,15 +16,16 @@ class ParticipanteTableSeeder extends Seeder
     public function run()
     {
         $tenistas = Tenista::all();
-        $torneos = Torneo::pluck('id');
+        $torneoIds = Torneo::pluck('id');
 
         foreach ($tenistas as $tenista) {
-            foreach ($torneos as $torneoId) {
+            foreach ($torneoIds as $torneoId) {
                 Participante::create([
                     'tenista_id' => $tenista->id,
-                    'torneo_id' => $torneoId,
                     'tenista_nombre' => $tenista->nombre,
                     'tenista_ranking' => $tenista->ranking,
+
+                    'torneo_id' => $torneoId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);

@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->bigInteger('ranking');
             $table->string('nombre');
+            $table->bigInteger('puntos');
             $table->string('pais');
             $table->date('fechaNacimiento');
             $table->bigInteger('edad');
@@ -30,7 +31,7 @@ return new class extends Migration {
             $table->double('wins');
             $table->double('loses');
             $table->double('winrate');
-            $table->string('imagen');
+            $table->string('imagen')->default('https://cope-cdnmed.agilecontent.com/resources/jpg/1/0/1603465773101.jpg');;
             $table->boolean('isDeleted')->default(false);
             $table->foreignId('torneo_idSecundario');
 
