@@ -260,6 +260,15 @@ class TenistaTableSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ];
+        usort($tenistas, function($a, $b) {
+            return $b['puntos'] - $a['puntos'];
+        });
+
+        $ranking = 1;
+        foreach ($tenistas as &$tenistaData) {
+            $tenistaData['ranking'] = $ranking;
+            $ranking++;
+        }
 
         foreach ($tenistas as $tenistaData) {
             $tenistaData['edad'] = Carbon::parse($tenistaData['fechaNacimiento'])->age;

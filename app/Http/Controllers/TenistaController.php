@@ -13,4 +13,14 @@ class TenistaController extends Controller
         return view('tenistas.index')->with('tenistas',$tenistas);
 
     }
+    public function show($id)
+    {
+        $tenista = Tenista::find($id);
+        if ($tenista) {
+            return view('tenistas.show')->with('tenista', $tenista);
+        } else {
+            return redirect()->route('tenistas.index');
+        }
+
+    }
 }

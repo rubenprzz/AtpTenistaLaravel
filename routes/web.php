@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 Route::group(['prefix' => 'tenistas'], function () {
     Route::get('/', [TenistaController::class, 'index'])->name('tenistas.index');
+    Route::get('/{id}', [TenistaController::class, 'show'])->name('tenistas.show');
+
 
 });
 Route::group(['prefix' => 'torneos'], function () {
