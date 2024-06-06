@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             TenistaTableSeeder::class,
             TorneoTableSeeder::class,
             ParticipanteTableSeeder::class,
+            UserTableSeeder::class
 
         ]);
         User::factory()->create([

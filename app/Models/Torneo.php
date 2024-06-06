@@ -44,6 +44,10 @@ class Torneo extends Model
         'created_at',
         'updated_at',
     ];
+    public static function getCategorias()
+    {
+        return Categoria::cases();
+    }
 
 
 
