@@ -35,10 +35,9 @@ class Tenista extends Model
 
 
     ];
-    public function torneo()
+    public function torneos()
     {
-        return $this->belongsTo(Torneo::class);
-
+        return $this->belongsToMany(Torneo::class, 'participantes', 'tenista_id', 'torneo_id');
     }
     public function participantes()
     {

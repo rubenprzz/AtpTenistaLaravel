@@ -21,12 +21,27 @@
                         </div>
                         <h2 class="text-xl font-medium title-font text-white mt-5">{{ $torneo->nombre }}</h2>
                         <p class="text-base leading-relaxed mt-2">{{ $torneo->ubicacion }}</p>
-                        <a class="text-indigo-400 inline-flex items-center mt-3" href="{{route('torneos.show',$torneo->id)}}">Ver Participantes
+                        <a class="text-indigo-400 inline-flex items-center mt-3"
+                           href="{{route('torneos.show',$torneo->id)}}">Ver Participantes
                             <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                  stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
                                 <path d="M5 12h14M12 5l7 7-7 7"></path>
                             </svg>
                         </a>
+                        @auth
+                            @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTorneo')
+                                <button onclick="openModal('{{ $torneo->id }}')"
+                                        class="text-orange-400 inline-flex items-center mt-3">
+                                    Eliminar
+                                    <svg fill="none" stroke="currentColor" stroke-linecap="round"
+                                         stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2"
+                                         viewBox="0 0 24 24">
+                                        <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                            @endif
+                        @endauth
+
                     </div>
                 @endforeach
             </div>
@@ -34,5 +49,32 @@
                 {{$torneos->links()}}
             </div>
         </div>
+        <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h2 class="text-lg text-black font-semibold mb-4">Confirmación</h2>
+                <p class="text-gray-700">¿Estás seguro de que deseas eliminar este torneo?</p>
+                <div class="mt-6 flex justify-end space-x-4">
+                    <button onclick="closeModal()" class="px-4  bg-gray-600 text-white rounded">Cancelar</button>
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4  py-2 bg-red-600 text-white rounded">Eliminar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function openModal(torneoId) {
+                document.getElementById('confirmationModal').classList.remove('hidden');
+                document.getElementById('deleteForm').action = `/torneos/${torneoId}`;
+            }
+
+            function closeModal() {
+                document.getElementById('confirmationModal').classList.add('hidden');
+            }
+        </script>
+
     </section>
+
 @endsection

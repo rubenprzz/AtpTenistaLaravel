@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['user', 'admin','adminTorneo','adminTenista'])->default('user');
+            $table->string('fotoDePerfil')->default('https://static.vecteezy.com/system/resources/previews/002/205/989/non_2x/user-profile-icon-free-vector.jpg');
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
