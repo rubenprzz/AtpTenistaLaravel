@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use App\Models\Participante;
@@ -24,6 +25,7 @@ class ParticipanteTableSeeder extends Seeder
                     'tenista_id' => $tenista->id,
                     'tenista_nombre' => $tenista->nombre,
                     'tenista_ranking' => $tenista->ranking,
+                    'tenista_puntos' => $tenista->puntos,
 
                     'torneo_id' => $torneoId,
                     'created_at' => now(),

@@ -1,7 +1,8 @@
 @extends('main')
 
 @section('content')
-    <body class="bg-cover bg-center" style="background-image: url('https://th.bing.com/th/id/OIP.mr1yFSfM84moAENvhSGfxwHaEi?rs=1&pid=ImgDetMain')">
+    <body class="bg-cover bg-center"
+          style="background-image: url('https://th.bing.com/th/id/OIP.mr1yFSfM84moAENvhSGfxwHaEi?rs=1&pid=ImgDetMain')">
     <section class="container mx-auto p-10 md:py-20 px-0 md:p-10 md:px-0">
         <section
             class="bg-gray-100 flex flex-col md:flex-row relative px-10 md:p-0 transform duration-500 hover:shadow-2xl cursor-pointer hover:-translate-y-1">
@@ -10,18 +11,22 @@
             <div class="ml-4 content  p-2 pt-8 md:p-12 pb-12 lg:max-w-lg w-full">
                 <div class="flex justify-between font-bold text-sm">
                     <p>{{ $torneo->categoria }}</p>
-                    <p class="text-gray-400">{{ $torneo->fechaInicio }} - {{ $torneo->fechaFinalizacion }}</p>
+                    <p class="text-gray-400">Fecha Inicio {{ $torneo->fechaInicio }} - Fecha
+                        Finalizacion {{ $torneo->fechaFinalizacion }}</p>
                 </div>
-                <h2 class="text-3xl font-semibold mt-4 md:mt-10">{{ $torneo->nombre }}</h2>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->ubicacion }}</p>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->modo }}</p>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->superficie }}</p>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->entradas }}</p>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->premio }}</p>
-                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">{{ $torneo->puntos }}</p>
-                <button class="mt-2 md:mt-5 p-3 px-5 bg-black text-white font-bold text-sm hover:bg-purple-800">
+                <h2 class="text-3xl font-semibold mt-4 md:mt-10">Nombre: {{ $torneo->nombre }}</h2>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">
+                    Ubicacion: {{ $torneo->ubicacion }}</p>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">Modo: {{ $torneo->modo }}</p>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">
+                    Superficie: {{ $torneo->superficie }}</p>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">
+                    Entradas: {{ $torneo->entradas }}</p>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">Premio: {{ $torneo->premio }}</p>
+                <p class="my-3 text-justify font-medium text-gray-700 leading-relaxed">Puntos: {{ $torneo->puntos }}</p>
+                <a href="{{ route('torneos.showAddParticipanteForm', $torneo->id) }}" class="mt-2 md:mt-5 p-3 px-5 bg-black text-white font-bold text-sm hover:bg-purple-800">
                     Participar
-                </button>
+                </a>
             </div>
         </section>
     </section>
@@ -54,6 +59,15 @@
                                     VER DETALLES
                                 </a>
                             </div>
+                            @auth()
+                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTorneo')
+                                    <form action="{{ route('participantes.destroy', $participante->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                                    </form>
+                                @endif
+                            @endauth
                         </div>
                     </div>
                 @endforeach

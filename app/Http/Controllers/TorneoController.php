@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Participante;
 use App\Models\Tenista;
 use App\Models\Torneo;
+use Exception;
 use Illuminate\Http\Request;
 
 class TorneoController extends Controller
@@ -24,74 +26,132 @@ class TorneoController extends Controller
         }
 
     }
-    public function create() {
-        return view('torneos.create');
+    public function create()
+    {
+        $tenistas = Tenista::all();
+        return view('torneos.create', compact('tenistas'));
     }
 
-    public function store(Request $request) {
-        $request -> validate([
-            'nombre' => 'required|string',
-            'ubicacion' => 'required|string',
-            'modo' => 'required|in:INDIVIDUAL,DOBLES,AMBOS',
-            'categoria' => 'required|in:ATP_250,ATP_500,MASTERS_1000',
-            'superficie' => 'required|in:DURA,HIERBA,ARCILLA',
-            'entradas_individual' => 'required|integer|min:0',
-            'entradas_dobles' => 'required|integer|min:0',
-            'premio' => 'required|integer|min:0',
-            'puntos' => 'required|integer|min:0',
-            'fecha_inicio' => 'required|date',
-            'fecha_fin' => 'required|date|after:fecha_inicio',
-            'imagen' => 'required|image',
-        ]);
+    public function eliminarParticipante($torneoId, $participanteId)
+    {
         try {
-            $torneo = new Torneo($request->all());
-            if ($request->hasFile('imagen')) {
-                $imagenPath = $request->file('imagen')->storeAs('torneos', $request->file('imagen')->getClientOriginalName(), 'public');
-                $torneo->imagen = $imagenPath;
-            } else {
-                $torneo->imagen = Torneo::$IMAGE_DEFAULT;
+            $torneo = Torneo::findOrFail($torneoId);
+
+            $participante = $torneo->participantes()->where('id', $participanteId)->first();
+
+            if (!$participante) {
+                return redirect()->back()->with('error', 'El participante no está asociado a este torneo');
             }
-            $torneo->save();
-            return redirect()->route('torneos.index')->with('success', 'Torneo creado exitosamente.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Error al crear el Torneo: ' . $e->getMessage());
+
+            $torneo->participantes()->detach($participanteId);
+
+            return redirect()->back()->with('success', 'Participante eliminado del torneo exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Ocurrió un error al eliminar el participante del torneo');
         }
     }
+    public function showAddParticipanteForm($torneoId)
+    {
+        $torneo = Torneo::findOrFail($torneoId);
+        $tenistas = Tenista::all();
 
-
-
-    public function edit($id) {
-        $torneo = Torneo::find($id);
-        return view('torneos.edit') -> with('torneo', $torneo);
+        return view('torneos.add-participante', compact('torneo', 'tenistas'));
     }
 
-    public function update(Request $request, $id) {
-        $torneo = Torneo::find($id);
-        if (!$torneo) {
-            return redirect()->route('torneos.index')->with('error', 'Torneo no encontrado');
-        }
-        $request -> validate([
-            'nombre' => 'string',
-            'ubicacion' => 'string',
-            'modo' => 'in:INDIVIDUAL,DOBLES,AMBOS',
-            'categoria' => 'in:ATP_250,ATP_500,MASTERS_1000',
-            'superficie' => 'in:DURA,HIERBA,ARCILLA',
-            'premio' => 'integer|min:0',
-            'puntos' => 'integer|min:0',
-            'fechaInicio' => 'date|after:today',
-            'fechaFinalizacion' => 'date|after:fecha_inicio',
-            'imagen' => 'file',
+    public function addParticipante(Request $request, $torneoId)
+    {
+        $request->validate([
+            'tenista_id' => 'required|exists:tenistas,id',
         ]);
-        try {
-            if ($request->hasFile('imagen')) {
-                $imagenPath = $request->file('imagen')->storeAs('torneos', $request->file('imagen')->getClientOriginalName(), 'public');
-                $torneo->imagen = $imagenPath;
-            }
-            $torneo->update($request->except('imagen'));
-            return redirect()->route('torneos.index')->with('success', 'Torneo actualizado exitosamente.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Error al actualizar el torneo: ' . $e->getMessage());
+
+        $torneo = Torneo::findOrFail($torneoId);
+
+        if ($torneo->participantes()->where('tenista_id', $request->tenista_id)->exists()) {
+            return redirect()->back()->with('error', 'El tenista ya está registrado en el torneo.');
         }
+
+        $participante = new Participante();
+        $participante->tenista_id = $request->tenista_id;
+        $participante->torneo_id = $torneo->id;
+        $participante->tenista_puntos = 0;
+        $participante->tenista_nombre= 'a';
+        $participante->tenista_ranking = $torneo->participantes()->count() + 1;
+        $participante->save();
+
+        return redirect()->route('torneos.show', $torneoId)->with('success', 'Participante añadido exitosamente.');
+    }
+
+
+
+    public function store(Request $request)
+    {
+
+
+        $torneo = new Torneo($request->all());
+
+        if ($request->hasFile('imagen')) {
+            $path = $request->file('imagen')->store('imagenes', 'public');
+            $torneo->imagen = $path;
+        } else {
+            $torneo->imagen = Torneo::$IMAGE_DEFAULT;
+        }
+
+        $torneo->save();
+
+
+
+        return redirect()->route('torneos.index')->with('success', 'Torneo creado exitosamente.');
+    }
+
+
+
+
+    public function edit($id)
+    {
+        $torneo = Torneo::with('participantes.tenista')->find($id);
+        $tenistas = Tenista::all();
+        return view('torneos.edit', compact('torneo', 'tenistas'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validación de datos
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+            'ubicacion' => 'required|string|max:255',
+            'modo' => 'required|string',
+            'categoria' => 'required|string',
+            'superficie' => 'required|string',
+            'premio' => 'required|numeric',
+            'puntos' => 'required|numeric',
+            'fechaInicio' => 'required|date',
+            'fechaFinalizacion' => 'required|date',
+            'imagen' => 'nullable|image|max:2048',
+        ]);
+
+        $torneo = Torneo::findOrFail($id);
+
+        // Actualiza los datos del torneo
+        $torneo->nombre = $request->nombre;
+        $torneo->ubicacion = $request->ubicacion;
+        $torneo->modo = $request->modo;
+        $torneo->categoria = $request->categoria;
+        $torneo->superficie = $request->superficie;
+        $torneo->premio = $request->premio;
+        $torneo->puntos = $request->puntos;
+        $torneo->fechaInicio = $request->fechaInicio;
+        $torneo->fechaFinalizacion = $request->fechaFinalizacion;
+
+        if ($request->hasFile('imagen')) {
+            $imagen = $request->file('imagen');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $ruta = $imagen->storeAs('imagenes', $nombreImagen, 'public');
+            $torneo->imagen = 'storage/' . $ruta;
+        }
+
+        $torneo->save();
+
+        return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
     }
 
     public function destroy($id) {

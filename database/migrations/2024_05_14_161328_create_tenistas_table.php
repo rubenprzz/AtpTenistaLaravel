@@ -27,19 +27,21 @@ return new class extends Migration {
             $table->enum('modo', ['INDIVIDUAL', 'DOBLE', 'INDIVIDUAL_DOBLE']);
             $table->string('entrenador');
             $table->bigInteger('dineroGanado');
-            $table->bigInteger('bestRanking');
+            $table->bigInteger('bestRanking')->nullable(); // Make bestRanking nullable
             $table->double('wins');
             $table->double('loses');
             $table->double('winrate');
             $table->string('imagen')->default('https://cope-cdnmed.agilecontent.com/resources/jpg/1/0/1603465773101.jpg');;
             $table->boolean('isDeleted')->default(false);
-            $table->foreignId('torneo_idSecundario');
+            $table->foreignId('torneo_idSecundario')->nullable();
 
 
 
             $table->timestamps();
         });
+
     }
+
 
 
     /**

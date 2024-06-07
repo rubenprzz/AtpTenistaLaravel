@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Participante extends Model
 {
+    protected $fillable = [
+        'torneo_id',
+        'tenista_id',
+        'tenista_puntos'
+    ];
     public function tenista(){
         return $this->belongsTo(Tenista::class);
     }

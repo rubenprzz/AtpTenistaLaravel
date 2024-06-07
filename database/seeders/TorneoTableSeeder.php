@@ -39,6 +39,7 @@ class TorneoTableSeeder extends Seeder
                 'superficie' => 'ARCILLA',
                 'entradas' => 128,
                 'premio' => 42000000,
+                'imagen'=> 'https://th.bing.com/th/id/R.e3d32528e06d972fcb493ba3518afb98?rik=EMKRYgpl70nQJA&riu=http%3a%2f%2fatj.com.mx%2fwp-content%2fuploads%2f2023%2f01%2fCalendario-de-Torneos.jpg&ehk=BIaEj0cPfNaoEqrAhhUoxdS%2f4BL%2bqw7Djn1VsspodRU%3d&risl=&pid=ImgRaw&r=0',
                 'puntos' => 2000,
                 'fechaInicio' => '2024-05-26',
                 'fechaFinalizacion' => '2024-06-09',

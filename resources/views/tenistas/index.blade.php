@@ -13,29 +13,34 @@
                                 <h1 class="text-2xl font-semibold text-gray-800 mt-4">
                                     {{$tenista->nombre}}
                                 </h1>
-                                <p class="text-xl text-gray-400 mt-2 leading-relaxed">
-                                    Located in Rajshahi Division, Bogra is one of the oldest and most fascinating towns
-                                    in Bangladesh
-                                </p>
+                                <p class="text-xl text-gray-400 mt-2 leading-relaxed"></p>
                             </div>
                             <div class="bg-blue-50 p-5">
                                 <div class="sm:flex sm:justify-between">
                                     <div>
                                         <div class="text-lg text-gray-700">
-                                            <span class="text-gray-900 font-bold">Puntos:{{$tenista->puntos}}</span>
+                                            <span class="text-gray-900 font-bold">Puntos: {{$tenista->puntos}}</span>
                                         </div>
                                         <div class="text-lg text-gray-700">
-                                            <span class="text-gray-900 font-bold">WinRate:{{$tenista->winrate}}</span>
+                                            <span class="text-gray-900 font-bold">WinRate: {{$tenista->winrate}}</span>
                                         </div>
                                     </div>
-                                    <a href="{{route('tenistas.show',$tenista->id)}}">
-                                    <button class="mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-purple-700 hover:bg-purple-600 font-bold text-white md:text-lg rounded-lg shadow-md">
-                                        Ver detalles
-                                    </button>
+                                    <a href="{{ route('tenistas.show', $tenista->id) }}">
+                                        <button class="ml-5 mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-purple-700 hover:bg-purple-600 font-bold text-white md:text-lg rounded-lg shadow-md">
+                                            Ver detalles
+                                        </button>
                                     </a>
+                                    @auth()
+                                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTenista')
+                                            <a href="{{ route('tenistas.edit', $tenista->id) }}">
+                                                <button class="ml-5 mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-blue-700 hover:bg-blue-600 font-bold text-white md:text-lg rounded-lg shadow-md">
+                                                    Editar tenista
+                                                </button>
+                                            </a>
+                                        @endif
+                                    @endauth
                                 </div>
-                                <div class="mt-3 text-gray-600 text-sm md:text-sm">
-                                </div>
+                                <div class="mt-3 text-gray-600 text-sm md:text-sm"></div>
                             </div>
                         </div>
                     </article>
@@ -44,8 +49,7 @@
         </div>
     @endforeach
     <div class="flex justify-center">
-        {{$tenistas->links()}}
+        {{ $tenistas->links() }}
     </div>
     </body>
 @endsection
-

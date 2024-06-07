@@ -18,6 +18,7 @@ class Tenista extends Model
         'fechaNacimiento',
         'edad',
         'altura',
+        'peso',
         'profesionalDesde',
         'mano',
         'reves',
