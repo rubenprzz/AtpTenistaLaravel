@@ -116,22 +116,10 @@ class TorneoController extends Controller
     public function update(Request $request, $id)
     {
         // Validación de datos
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'ubicacion' => 'required|string|max:255',
-            'modo' => 'required|string',
-            'categoria' => 'required|string',
-            'superficie' => 'required|string',
-            'premio' => 'required|numeric',
-            'puntos' => 'required|numeric',
-            'fechaInicio' => 'required|date',
-            'fechaFinalizacion' => 'required|date',
-            'imagen' => 'nullable|image|max:2048',
-        ]);
+
 
         $torneo = Torneo::findOrFail($id);
 
-        // Actualiza los datos del torneo
         $torneo->nombre = $request->nombre;
         $torneo->ubicacion = $request->ubicacion;
         $torneo->modo = $request->modo;
@@ -154,16 +142,15 @@ class TorneoController extends Controller
         return redirect()->route('torneos.index')->with('success', 'Torneo actualizado correctamente');
     }
 
-    public function destroy($id) {
-        $torneo = Torneo::find($id);
-        if (!$torneo) {
-            return redirect()->route('torneos.index')->with('error', 'Torneo no encontrado');
-        }
-        try {
-            $torneo->delete();
-            return redirect()->route('torneos.index')->with('success', 'Torneo borrado exitosamente.');
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Error al borrar el torneo: ' . $e->getMessage());
+    public function destroy($id)
+    {
+        $tenista = Tenista::find($id);
+        if ($tenista) {
+
+            $tenista->delete();
+            return redirect()->route('tenistas.index');
+        } else {
+            return redirect()->route('tenistas.index');
         }
     }
 }

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Participante extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'torneo_id',
         'tenista_id',
@@ -29,4 +31,6 @@ class Participante extends Model
         'created_at',
         'updated_at',
         ];
+    use HasFactory;
+
 }

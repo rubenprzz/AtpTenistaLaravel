@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Torneo extends Model
 {
+    use SoftDeletes;
     use HasUuids;
+
 
     public static $IMAGE_DEFAULT= 'https://www.sport1.me/wp-content/uploads/2021/05/Wimbledon-2021-Dates.jpg';
 
@@ -48,6 +51,8 @@ class Torneo extends Model
     {
         return Categoria::cases();
     }
+    use HasFactory;
+
 
 
 

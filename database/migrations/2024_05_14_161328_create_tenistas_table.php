@@ -13,6 +13,7 @@ return new class extends Migration {
     {
         Schema::create('tenistas', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->bigInteger('ranking');
             $table->string('nombre');
             $table->bigInteger('puntos');

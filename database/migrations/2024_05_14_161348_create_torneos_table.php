@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('torneos', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->softDeletes();
             $table->bigIncrements('idSecundario')->unique();
             $table->string('nombre');
             $table->string('ubicacion');

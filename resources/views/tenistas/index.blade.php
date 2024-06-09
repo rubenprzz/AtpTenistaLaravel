@@ -33,12 +33,22 @@
                                     @auth()
                                         @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTenista')
                                             <a href="{{ route('tenistas.edit', $tenista->id) }}">
-                                                <button class="ml-5 mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-blue-700 hover:bg-blue-600 font-bold text-white md:text-lg rounded-lg shadow-md">
+                                                <button class="ml-3 mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-blue-700 hover:bg-blue-600 font-bold text-white md:text-lg rounded-lg shadow-md">
                                                     Editar tenista
                                                 </button>
                                             </a>
+                                            <button onclick="openModal('{{ $tenista->id }}')"
+                                                    class="ml-3 mt-3 sm:mt-0 py-2 px-5 md:py-3 md:px-6 bg-blue-700 hover:bg-blue-600 font-bold text-white md:text-lg rounded-lg shadow-md">
+                                                Eliminar
+                                            </button>
+
+
                                         @endif
                                     @endauth
+
+
+
+
                                 </div>
                                 <div class="mt-3 text-gray-600 text-sm md:text-sm"></div>
                             </div>
@@ -51,5 +61,32 @@
     <div class="flex justify-center">
         {{ $tenistas->links() }}
     </div>
+    <div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-lg text-black font-semibold mb-4">Confirmación</h2>
+            <p class="text-gray-700">¿Estás seguro de que deseas eliminar este tenista?</p>
+            <div class="mt-6 flex justify-end space-x-4">
+                <button onclick="closeModal()" class="px-4 bg-gray-600 text-white rounded">Cancelar</button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(torneoId) {
+            document.getElementById('confirmationModal').classList.remove('hidden');
+            document.getElementById('deleteForm').action = `/tenistas/${torneoId}`;
+        }
+
+        function closeModal() {
+            document.getElementById('confirmationModal').classList.add('hidden');
+        }
+    </script>
+
+    </section>
     </body>
 @endsection

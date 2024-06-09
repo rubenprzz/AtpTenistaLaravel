@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('participantes', function (Blueprint $table) {
             $table->id();
+            $table->softDeletes();
             $table->foreignId('tenista_id');
             $table->foreignUuid('torneo_id');
             $table->string('tenista_nombre');

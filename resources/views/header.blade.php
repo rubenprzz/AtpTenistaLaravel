@@ -3,15 +3,19 @@
     <div class="fixed flex flex-col top-0 left-0 w-64 bg-gray-900 h-full shadow-lg">
         <div class="flex items-center pl-6 h-20 border-b border-gray-800">
             @auth
+
                 <img src="{{ Auth::user()->fotoDePerfil }}" alt="{{ Auth::user()->name }}"
                      class="rounded-full h-10 w-10 flex items-center justify-center mr-3 border-2 border-blue-500">
                 <div class="ml-1">
+                    <a href="{{route('profile.edit')}}">
                     <p class="ml-1 text-md font-medium tracking-wide truncate text-gray-100 font-sans">{{ Auth::user()->name }}</p>
+                    </a>
                     <div class="badge">
                         <span
                             class="px-2 py-0.5 ml-auto text-xs font-medium tracking-wide text-blue-800 bg-blue-100 rounded-full">{{ Auth::user()->role }}</span>
                     </div>
                 </div>
+
             @endauth
         </div>
         <div class="overflow-y-auto overflow-x-hidden flex-grow">
@@ -112,15 +116,32 @@
                 @endauth
                 @auth()
                     <li>
-                    @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTorneo')
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTorneo')
                             <a href="{{ route('torneos.create') }}"
                                class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil ml-4" viewBox="0 0 16 16">
-                                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                     class="bi bi-pencil ml-4" viewBox="0 0 16 16">
+                                    <path
+                                        d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
 
-                                <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">Crear Torneo</span>
+                                    <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">Crear Torneo</span>
                             </a>
-                    @endif
+                        @endif
+                    </li>
+                @endauth()
+                @auth()
+                    <li>
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'adminTenista')
+                            <a href="{{ route('tenistas.create') }}"
+                               class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-700 text-gray-500 hover:text-gray-200 border-l-4 border-transparent hover:border-blue-500 pr-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="ml-4" width="16" height="16" fill="currentColor">
+                                     class="bi bi-pencil ml-6" viewBox="0 0 16 16">
+                                    <path
+                                        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                                </svg>
+                                    <span class="ml-2 font-semibold text-sm tracking-wide truncate font-sans">Crear Tenista</span>
+                            </a>
+                        @endif
                     </li>
                 @endauth()
             </ul>

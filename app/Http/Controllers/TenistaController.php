@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use AllowDynamicProperties;
 use App\Models\Tenista;
 use App\Models\Torneo;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -9,7 +10,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 
-class TenistaController extends Controller
+#[AllowDynamicProperties] class TenistaController extends Controller
 {
     public function index()
     {
@@ -42,10 +43,8 @@ class TenistaController extends Controller
     }
     public function edit($id)
     {
-        // Retrieve the tenista by id
         $tenista = Tenista::findOrFail($id);
 
-        // Pass the tenista to the view
         return view('tenistas.edit', compact('tenista'));
     }
 
@@ -98,6 +97,17 @@ class TenistaController extends Controller
         $tenista->save();
 
         return redirect()->route('tenistas.index')->with('success', 'Tenista creado exitosamente.');
+    }
+    public function destroy($id)
+    {
+        $tenista = Tenista::find($id);
+        if ($tenista) {
+
+            $tenista->delete();
+            return redirect()->route('tenistas.index');
+        } else {
+            return redirect()->route('tenistas.index');
+        }
     }
 
 }
