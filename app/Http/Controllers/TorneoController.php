@@ -115,7 +115,6 @@ class TorneoController extends Controller
 
     public function update(Request $request, $id)
     {
-        // Validación de datos
 
 
         $torneo = Torneo::findOrFail($id);
@@ -144,13 +143,13 @@ class TorneoController extends Controller
 
     public function destroy($id)
     {
-        $tenista = Tenista::find($id);
-        if ($tenista) {
+        $torneo = Torneo::find($id);
+        if ($torneo) {
 
-            $tenista->delete();
-            return redirect()->route('tenistas.index');
+            $torneo->delete();
+            return redirect()->route('torneos.index');
         } else {
-            return redirect()->route('tenistas.index');
+            return redirect()->route('torneos.index');
         }
     }
 }

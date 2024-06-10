@@ -115,7 +115,6 @@ class TenistaControllerTest extends TestCase
 
         $updatedData = [
             'nombre' => 'Updated Name',
-            // Añade los campos necesarios para la actualización
         ];
 
         $response = $this->put(route('tenistas.update', $tenista->id), $updatedData);
